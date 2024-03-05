@@ -6,6 +6,7 @@ To run this app you need to have:
 
 - an [OpenAI](https://platform.openai.com/api-keys) API key
 - an [Exa](https://exa.ai) API key (there is a free tier available)
+- (optional) a [Phospho](https://phospho.ai) API key and project id
 
 ## Instalation
 
