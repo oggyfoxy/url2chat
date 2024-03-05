@@ -29,7 +29,7 @@ if st.session_state.url is None:
     with col1:
         button_wikipedia = st.button("Wikipedia")
         if button_wikipedia:
-            url = "https://en.wikipedia.org/wiki/Streamlit"
+            url = "https://en.wikipedia.org/"
     with col2:
         button_karpathy = st.button("A. Karpathy's blog")
         if button_karpathy:
