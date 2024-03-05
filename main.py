@@ -51,13 +51,16 @@ else:
     # Display the URL we are talking to
     st.write(f"Chatting with {st.session_state.url}")
     # Button to change the URL
-    if st.button("Change URL"):
-        st.session_state.url = None
-        st.session_state.messages = []
-        st.rerun()
-    if st.button("New chat"):
-        st.session_state.messages = []
-        st.rerun()
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Change URL"):
+            st.session_state.url = None
+            st.session_state.messages = []
+            st.rerun()
+    with col2:
+        if st.button("New chat"):
+            st.session_state.messages = []
+            st.rerun()
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
