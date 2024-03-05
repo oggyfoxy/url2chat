@@ -51,14 +51,14 @@ else:
     # Display the URL we are talking to
     st.write(f"Chatting with {st.session_state.url}")
     # Button to change the URL
-    col1, col2, col3 = st.columns([1, 1, 10])
+    col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Change URL"):
+        if st.button("Change URL", use_container_width=True):
             st.session_state.url = None
             st.session_state.messages = []
             st.rerun()
     with col2:
-        if st.button("New chat"):
+        if st.button("New chat", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
 
