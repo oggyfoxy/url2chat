@@ -25,6 +25,19 @@ ROLE_TO_AVATAR = {
 
 if st.session_state.url is None:
     url = st.text_input("Enter the URL of a website to chat with it")
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col1:
+        button_wikipedia = st.button("Wikipedia")
+        if button_wikipedia:
+            url = "https://en.wikipedia.org/wiki/Streamlit"
+    with col2:
+        button_karpathy = st.button("A. Karpathy's blog")
+        if button_karpathy:
+            url = "http://karpathy.github.io"
+    with col3:
+        button_hackernews = st.button("Hacker News")
+        if button_hackernews:
+            url = "https://news.ycombinator.com"
     if url:
         # Format checks
         if not url.startswith("http"):
@@ -42,6 +55,10 @@ else:
         st.session_state.url = None
         st.session_state.messages = []
         st.rerun()
+    if st.button("New chat"):
+        st.session_state.messages = []
+        st.rerun()
+
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"], avatar=ROLE_TO_AVATAR[message["role"]]):
