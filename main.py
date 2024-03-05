@@ -15,13 +15,11 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 st.markdown(
-    "# 📖 url2chat - Chat with any website\n*Built by [phospho 🧪](https://phospho.ai), Open Source Text Analytics for LLM Apps*"
+    "# 📖 url2chat - Chat with any website\n*Built by 🧪[phospho](https://phospho.ai), Open Source Text Analytics for LLM Apps*"
 )
 
 if st.session_state.url is None:
-    url = st.text_input(
-        "Enter the URL of a website to chat with it", "https://www.example.com"
-    )
+    url = st.text_input("Enter the URL of a website to chat with it")
     if url:
         # Format checks
         if not url.startswith("http"):
