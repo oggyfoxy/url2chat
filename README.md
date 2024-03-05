@@ -42,4 +42,4 @@ This will open a new tab in your default browser with the app running.
 
 ## Hosted version
 
-We deployed this app using stremlit comunity cloud, you can access it [here](https://url2chat.streamlit.app).
+We deployed this app using streamlit community cloud, you can access it [here](https://url2chat.streamlit.app).
