@@ -18,6 +18,11 @@ st.markdown(
     "# 📖 url2chat - Chat with any website\n*Built by 🧪[phospho](https://phospho.ai), Open Source Text Analytics for LLM Apps*"
 )
 
+ROLE_TO_AVATAR = {
+    "user": "🦸‍♂️",
+    "assistant": "📖",
+}
+
 if st.session_state.url is None:
     url = st.text_input("Enter the URL of a website to chat with it")
     if url:
@@ -39,7 +44,7 @@ else:
         st.rerun()
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
+        with st.chat_message(message["role"], avatar=ROLE_TO_AVATAR[message["role"]]):
             st.markdown(message["content"])
 
     # Accept user input
@@ -47,11 +52,11 @@ else:
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         # Display user message in chat message container
-        with st.chat_message("user", avatar="🦸‍♂️"):
+        with st.chat_message("user", avatar=ROLE_TO_AVATAR["user"]):
             st.markdown(prompt)
 
         # Display assistant response in chat message container
-        with st.chat_message("assistant", avatar="📖"):
+        with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
             response = query2answer(prompt, st.session_state.url)
             st.markdown(response)
 
