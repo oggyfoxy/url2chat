@@ -48,8 +48,6 @@ if st.session_state.url is None:
 
 else:
     # TODO: Add a check to see if the URL is valid
-    # Display the URL we are talking to
-    st.write(f"Chatting with {st.session_state.url}")
     # Button to change the URL
     col1, col2 = st.columns([1, 1])
     with col1:
@@ -61,6 +59,9 @@ else:
         if st.button("New chat", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
+
+    with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
+        st.markdown(f"You're chatting with {st.session_state.url}. Ask me anything! 📖")
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
