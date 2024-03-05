@@ -4,12 +4,12 @@ from openai import OpenAI
 import tiktoken
 from loguru import logger
 
-from config import EXA_API_KEY, OPENAI_API_KEY
+import config
 
-exa = Exa(EXA_API_KEY)
+exa = Exa(config.EXA_API_KEY)
 
 # For now we use the sync openai client
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
+openai_client = OpenAI(api_key=config.OPENAI_API_KEY)
 
 
 def get_text_chunks(

@@ -1,6 +1,12 @@
 import streamlit as st
 from agent import query2answer
+import phospho
 
+import config
+
+# By default, phospho reads the PHOSPHO_API_KEY and PHOSPHO_PROJECT_ID from the environment variables
+if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
+    phospho.init()
 # Initialize URL
 if "url" not in st.session_state:
     st.session_state.url = None
@@ -46,4 +52,13 @@ else:
         with st.chat_message("assistant"):
             response = query2answer(prompt, st.session_state.url)
             st.markdown(response)
+
+        # If enabled, log the interaction to Phospho
+        if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
+            phospho.log(
+                input=prompt,
+                output=response,
+                # TODO: for chats, group tasks together in sessions
+                # session_id = "session_1",
+            )
         st.session_state.messages.append({"role": "assistant", "content": response})
