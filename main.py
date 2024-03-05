@@ -1,6 +1,7 @@
 import streamlit as st
 from agent import query2answer
 import phospho
+from urllib.parse import urlparse
 
 import config
 
@@ -44,7 +45,12 @@ if st.session_state.url is None:
         # Format checks
         if not url.startswith("http"):
             url = "https://" + url
-        st.session_state.url = url
+
+        # Parse the URL to only have the domain
+        o = urlparse(url)
+        domain = o.hostname
+
+        st.session_state.url = f"https://{domain}"
         # Trigger a rerun to start chatting
         st.rerun()
 
