@@ -14,7 +14,7 @@ if "url" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-st.title("🌬️ url2chat")
+st.title("📖 url2chat")
 
 if st.session_state.url is None:
     url = st.text_input("Enter the URL of a website to start chatting with it")
@@ -45,11 +45,11 @@ else:
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         # Display user message in chat message container
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar="🦸‍♂️"):
             st.markdown(prompt)
 
         # Display assistant response in chat message container
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar="📖"):
             response = query2answer(prompt, st.session_state.url)
             st.markdown(response)
 
