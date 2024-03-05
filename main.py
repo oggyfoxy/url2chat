@@ -77,11 +77,15 @@ else:
             st.markdown(prompt)
 
         # Display assistant response in chat message container
+        chat_answer, url_sources = query2answer(
+            prompt, st.session_state.url, st.session_state.messages
+        )
         with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
-            response = query2answer(
-                prompt, st.session_state.url, st.session_state.messages
-            )
-            st.markdown(response)
+            st.markdown(chat_answer)
+            # Display the sources in a hidden accordion container
+            with st.expander("Sources", expanded=False):
+                for source in url_sources:
+                    st.markdown("- " + source)
 
         # If enabled, log the interaction to Phospho
         if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:

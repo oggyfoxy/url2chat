@@ -1,5 +1,5 @@
 from exa_py import Exa
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from openai import OpenAI
 import tiktoken
 from loguru import logger
@@ -17,7 +17,7 @@ def get_text_chunks(
     url: str,
     num_sentences: int = 15,
     highlights_per_url: int = 5,
-) -> List[str]:
+) -> Tuple[List[str], List[str]]:
     """
     Return a lsit of text chunks from the given URL that are relevant to the query.
     """
@@ -35,8 +35,9 @@ def get_text_chunks(
     )
 
     chunks = [sr.highlights[0] for sr in search_response.results]
+    url_sources = list(set([sr.url for sr in search_response.results]))
 
-    return chunks
+    return chunks, url_sources
 
 
 def generate_prompt_from_chuncks(chunks: List[str], query: str) -> str:
@@ -98,13 +99,15 @@ def invoke_llm(
     return completion.choices[0].message.content
 
 
-def query2answer(query: str, url: str, session_messages: List[Dict[str, str]]) -> str:
+def query2answer(
+    query: str, url: str, session_messages: List[Dict[str, str]]
+) -> Tuple[str, List[str]]:
     """
     Given a query and an URL, return the answer to the query.
     """
     try:
         logger.info(f"Query: {query}")
-        chuncks = get_text_chunks(query, url)
+        chuncks, url_sources = get_text_chunks(query, url)
         logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
         prompt = generate_prompt_from_chuncks(chuncks, query)
         # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
@@ -113,4 +116,4 @@ def query2answer(query: str, url: str, session_messages: List[Dict[str, str]]) -
     except Exception as e:
         logger.error(f"An error occurred: {e}")
         llm_answer = "Sorry, I was not able to answer. Did you setup a valid URL?"
-    return llm_answer
+    return llm_answer, url_sources
