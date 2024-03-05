@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 
 EXA_API_KEY = st.secrets["EXA_API_KEY"]
