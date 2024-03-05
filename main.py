@@ -56,7 +56,7 @@ else:
             st.session_state.messages = []
             st.rerun()
     with col2:
-        if st.button("New chat", use_container_width=True):
+        if st.button("Clear chat", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
 
