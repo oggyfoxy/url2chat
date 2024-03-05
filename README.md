@@ -17,11 +17,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Setup the environment variables:
+Setup the streamlit secrets int the `.streamlit/secrets.toml` file:
 
-```bash
-export OPENAI_API_KEY=your_openai_api_key
-export EXA_API_KEY=your_exa_api_key
+```toml
+EXA_API_KEY=""
+OPENAI_API_KEY=""
 ```
 
 ## Usage
