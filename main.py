@@ -50,6 +50,17 @@ else:
     # TODO: Add a check to see if the URL is valid
     # Display the URL we are talking to
     st.write(f"Chatting with {st.session_state.url}")
+    # Button to change the URL
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Change URL", use_container_width=True):
+            st.session_state.url = None
+            st.session_state.messages = []
+            st.rerun()
+    with col2:
+        if st.button("New chat", use_container_width=True):
+            st.session_state.messages = []
+            st.rerun()
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
@@ -57,8 +68,7 @@ else:
             st.markdown(message["content"])
 
     # Accept user input
-    prompt = st.chat_input("What's up?")
-    if prompt:
+    if prompt := st.chat_input("What's up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         # Display user message in chat message container
@@ -79,15 +89,3 @@ else:
                 # session_id = "session_1",
             )
         st.session_state.messages.append({"role": "assistant", "content": response})
-
-    # Button to change the URL
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        if st.button("Change URL", use_container_width=True):
-            st.session_state.url = None
-            st.session_state.messages = []
-            st.rerun()
-    with col2:
-        if st.button("New chat", use_container_width=True):
-            st.session_state.messages = []
-            st.rerun()
