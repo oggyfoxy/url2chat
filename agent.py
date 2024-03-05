@@ -90,11 +90,15 @@ def query2answer(query: str, url: str) -> str:
     """
     Given a query and an URL, return the answer to the query.
     """
-    logger.info(f"Query: {query}")
-    chuncks = get_text_chunks(query, url)
-    logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
-    prompt = generate_prompt_from_chuncks(chuncks, query)
-    # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
-    llm_answer = invoke_llm(prompt)
-    logger.info(f"Answer: {llm_answer}")
+    try:
+        logger.info(f"Query: {query}")
+        chuncks = get_text_chunks(query, url)
+        logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
+        prompt = generate_prompt_from_chuncks(chuncks, query)
+        # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
+        llm_answer = invoke_llm(prompt)
+        logger.info(f"Answer: {llm_answer}")
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+        llm_answer = "Sorry, I was not able to answer. Did you setup a valid URL?"
     return llm_answer
