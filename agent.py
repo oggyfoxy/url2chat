@@ -2,12 +2,13 @@ from exa_py import Exa
 from typing import List
 from openai import OpenAI
 import tiktoken
+from loguru import logger
 
 from config import EXA_API_KEY, OPENAI_API_KEY
 
 exa = Exa(EXA_API_KEY)
 
-# For now we use the sync client
+# For now we use the sync openai client
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
 
@@ -89,8 +90,11 @@ def query2answer(query: str, url: str) -> str:
     """
     Given a query and an URL, return the answer to the query.
     """
+    logger.info(f"Query: {query}")
     chuncks = get_text_chunks(query, url)
+    logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
     prompt = generate_prompt_from_chuncks(chuncks, query)
     # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
     llm_answer = invoke_llm(prompt)
+    logger.info(f"Answer: {llm_answer}")
     return llm_answer
