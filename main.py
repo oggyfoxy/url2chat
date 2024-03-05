@@ -13,6 +13,8 @@ if "url" not in st.session_state:
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "session_id" not in st.session_state:
+    st.session_state.session_id = phospho.new_session()
 
 st.markdown(
     "# 📖 url2chat - Chat with any website\n*Built by 🧪[phospho](https://phospho.ai), Open Source Text Analytics for LLM Apps*"
@@ -54,10 +56,12 @@ else:
         if st.button("Change URL", use_container_width=True):
             st.session_state.url = None
             st.session_state.messages = []
+            st.session_state.session_id = phospho.new_session()
             st.rerun()
     with col2:
         if st.button("Clear chat", use_container_width=True):
             st.session_state.messages = []
+            st.session_state.session_id = phospho.new_session()
             st.rerun()
 
     with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
@@ -91,8 +95,9 @@ else:
         if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
             phospho.log(
                 input=prompt,
-                output=response,
+                output=chat_answer,
                 # TODO: for chats, group tasks together in sessions
-                # session_id = "session_1",
+                session_id=st.session_state.session_id,
+                metadata={"sources": url_sources},
             )
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.messages.append({"role": "assistant", "content": chat_answer})
