@@ -1,5 +1,5 @@
 from exa_py import Exa
-from typing import List
+from typing import Dict, List
 from openai import OpenAI
 import tiktoken
 from loguru import logger
@@ -70,14 +70,26 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
     return num_tokens
 
 
-def invoke_llm(prompt: str, model_name: str = "gpt-3.5-turbo") -> str:
+def invoke_llm(
+    prompt: str,
+    model_name: str = "gpt-3.5-turbo",
+    previous_messages: List[Dict[str, str]] = None,
+) -> str:
     """
     Invoke the language model with the given prompt and return the response.
     """
+    if previous_messages is None:
+        previous_messages = []
     completion = openai_client.chat.completions.create(
         model=model_name,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "system",
+                "content": "You are a helpful assistant replying to questions given a context.",
+            }
+        ]
+        + previous_messages
+        + [
             {"role": "user", "content": prompt},
         ],
         temperature=0.0,
@@ -86,7 +98,7 @@ def invoke_llm(prompt: str, model_name: str = "gpt-3.5-turbo") -> str:
     return completion.choices[0].message.content
 
 
-def query2answer(query: str, url: str) -> str:
+def query2answer(query: str, url: str, session_messages: List[Dict[str, str]]) -> str:
     """
     Given a query and an URL, return the answer to the query.
     """
@@ -96,7 +108,7 @@ def query2answer(query: str, url: str) -> str:
         logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
         prompt = generate_prompt_from_chuncks(chuncks, query)
         # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
-        llm_answer = invoke_llm(prompt)
+        llm_answer = invoke_llm(prompt, previous_messages=session_messages)
         logger.info(f"Answer: {llm_answer}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")

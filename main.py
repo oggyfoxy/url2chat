@@ -78,7 +78,9 @@ else:
 
         # Display assistant response in chat message container
         with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
-            response = query2answer(prompt, st.session_state.url)
+            response = query2answer(
+                prompt, st.session_state.url, st.session_state.messages
+            )
             st.markdown(response)
 
         # If enabled, log the interaction to Phospho
