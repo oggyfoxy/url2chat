@@ -2,6 +2,7 @@ import streamlit as st
 from agent import query2answer
 import phospho
 from urllib.parse import urlparse
+import time
 
 import config
 
@@ -9,6 +10,11 @@ import config
 if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
     phospho.init()
 # Initialize URL
+# Check the query parameters for a URL
+if "url" in st.query_params:
+    # Check it is note None
+    if st.query_params.url and st.query_params.url != "None":
+        st.session_state.url = st.query_params.url
 if "url" not in st.session_state:
     st.session_state.url = None
 # Initialize chat history
@@ -51,18 +57,26 @@ if st.session_state.url is None:
         domain = o.hostname
 
         st.session_state.url = f"https://{domain}"
+        # Set the URL as a query parameter to trigger a rerun
+        st.query_params.url = f"https://{domain}"
         # Trigger a rerun to start chatting
+        time.sleep(0.1)
         st.rerun()
 
 else:
+    # Add the URL as a query parameter (the rerun will remove it from the URL bar)
+    st.query_params.url = st.session_state.url
     # TODO: Add a check to see if the URL is valid
     # Button to change the URL
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Change URL", use_container_width=True):
             st.session_state.url = None
+            st.query_params.pop("url", None)
             st.session_state.messages = []
             st.session_state.session_id = phospho.new_session()
+            # We need to add a small delay, otherwise the query parameter is not removed before the rerun
+            time.sleep(0.5)
             st.rerun()
     with col2:
         if st.button("Clear chat", use_container_width=True):
