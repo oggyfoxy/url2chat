@@ -3,6 +3,7 @@ from agent import query2answer
 import phospho
 from urllib.parse import urlparse
 import time
+from streamlit_feedback import streamlit_feedback
 
 import config
 
@@ -121,3 +122,27 @@ else:
                 metadata={"sources": url_sources},
             )
         st.session_state.messages.append({"role": "assistant", "content": chat_answer})
+
+
+# Add feedback button
+def _submit_feedback(feedback: dict):
+    # Add a check if phospho is setup
+    if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
+        phospho.user_feedback(
+            task_id=phospho.latest_task_id,
+            raw_flag=feedback["score"],
+            notes=feedback["text"],
+        )
+        st.toast(f"Thank you for your feedback!")
+    else:
+        st.toast(f"phospho is not setup, feedback not sent.")
+
+
+if len(st.session_state.messages) > 1:
+    feedback = streamlit_feedback(
+        feedback_type="thumbs",
+        optional_text_label="[Optional] Please provide an explanation",
+        on_submit=_submit_feedback,
+        # To create a new feedback component for every message and session, you need to provide a unique key
+        key=f"{st.session_state.session_id}_{len(st.session_state.messages)}",
+    )
