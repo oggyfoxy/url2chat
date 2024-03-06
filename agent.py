@@ -15,8 +15,8 @@ openai_client = OpenAI(api_key=config.OPENAI_API_KEY)
 def get_text_chunks(
     query: str,
     url: str,
-    num_sentences: int = 15,
-    highlights_per_url: int = 5,
+    num_sentences: int = 5,
+    highlights_per_url: int = 3,
 ) -> Tuple[List[str], List[str]]:
     """
     Return a lsit of text chunks from the given URL that are relevant to the query.
