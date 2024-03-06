@@ -34,7 +34,7 @@ def get_text_chunks(
         include_domains=[url],
     )
 
-    chunks = [sr.highlights[0] for sr in search_response.results]
+    chunks = ["\n".join(sr.highlights) for sr in search_response.results]
     url_sources = list(set([sr.url for sr in search_response.results]))
 
     return chunks, url_sources
