@@ -115,5 +115,6 @@ def query2answer(
         logger.info(f"Answer: {llm_answer}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-        llm_answer = "Sorry, I was not able to answer. Did you setup a valid URL?"
+        llm_answer = "Sorry, I was not able to answer. Either you setup a wrong URL or the URL is too new."
+        url_sources = []
     return llm_answer, url_sources
