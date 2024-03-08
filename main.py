@@ -119,7 +119,10 @@ else:
                 output=chat_answer,
                 # TODO: for chats, group tasks together in sessions
                 session_id=st.session_state.session_id,
-                metadata={"sources": url_sources},
+                metadata={
+                    "sources": url_sources,
+                    "url": st.session_state.url,
+                },
             )
         st.session_state.messages.append({"role": "assistant", "content": chat_answer})
 
