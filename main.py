@@ -32,7 +32,7 @@ ROLE_TO_AVATAR = {
 
 if st.session_state.url is None:
     url = st.text_input("Enter the URL of a website to chat with it")
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col1:
         button_wikipedia = st.button("Wikipedia")
         if button_wikipedia:
@@ -45,6 +45,10 @@ if st.session_state.url is None:
         button_hackernews = st.button("Hacker News")
         if button_hackernews:
             url = "https://news.ycombinator.com"
+    with col4:
+        button_phospho = st.button("phospho.ai")
+        if button_phospho:
+            url = "https://phospho.ai"
     if url:
         # Format checks
         if not url.startswith("http"):
