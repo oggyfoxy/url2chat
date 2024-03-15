@@ -144,9 +144,8 @@ def query2answer(
             metadata={
                 "sources": url_sources,
                 "url": url,
-                "system_prompt": "You are a helpful assistant replying to questions given a context.\n{prompt}",
+                "system_prompt": f"You are a helpful assistant replying to questions given a context.\n{prompt}",
                 "model": model_name,
-                "prompt": prompt,
             },
         )
     return llm_answer, url_sources
