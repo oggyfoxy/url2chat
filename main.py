@@ -46,7 +46,7 @@ if st.session_state.url is None:
         if button_hackernews:
             url = "https://news.ycombinator.com"
     with col4:
-        button_phospho = st.button("phospho.ai")
+        button_phospho = st.button("🧪phospho.ai")
         if button_phospho:
             url = "https://phospho.ai"
     if url:
