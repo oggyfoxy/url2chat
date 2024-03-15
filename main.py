@@ -1,15 +1,12 @@
-import streamlit as st
-from agent import query2answer
-import phospho
-from urllib.parse import urlparse
 import time
-from streamlit_feedback import streamlit_feedback
+from urllib.parse import urlparse
 
 import config
+import streamlit as st
+from agent import query2answer, phospho
+from streamlit_feedback import streamlit_feedback
 
-# By default, phospho reads the PHOSPHO_API_KEY and PHOSPHO_PROJECT_ID from the environment variables
-if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
-    phospho.init()
+
 # Initialize URL
 # Check the query parameters for a URL
 if "url" in st.query_params:
@@ -94,16 +91,19 @@ else:
             st.markdown(message["content"])
 
     # Accept user input
-    if prompt := st.chat_input("What is this website about?"):
+    if query := st.chat_input("What is this website about?"):
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append({"role": "user", "content": query})
         # Display user message in chat message container
         with st.chat_message("user", avatar=ROLE_TO_AVATAR["user"]):
-            st.markdown(prompt)
+            st.markdown(query)
 
         # Display assistant response in chat message container
         chat_answer, url_sources = query2answer(
-            prompt, st.session_state.url, st.session_state.messages
+            query=query,
+            url=st.session_state.url,
+            session_messages=st.session_state.messages,
+            session_id=st.session_state.session_id,
         )
         with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
             st.markdown(chat_answer)
@@ -112,18 +112,6 @@ else:
                 for source in url_sources:
                     st.markdown("- " + source)
 
-        # If enabled, log the interaction to Phospho
-        if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
-            phospho.log(
-                input=prompt,
-                output=chat_answer,
-                # TODO: for chats, group tasks together in sessions
-                session_id=st.session_state.session_id,
-                metadata={
-                    "sources": url_sources,
-                    "url": st.session_state.url,
-                },
-            )
         st.session_state.messages.append({"role": "assistant", "content": chat_answer})
 
 
