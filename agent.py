@@ -58,7 +58,8 @@ def generate_prompt_from_chuncks(chunks: List[str], query: str) -> str:
         concatenated_chunks += chunck + "\n\n"
 
     prompt = f"""
-Context information is below.
+Query: {query}
+Read the following text and answer the query.
 ---------------------
 {concatenated_chunks}
 ---------------------
@@ -137,14 +138,15 @@ def query2answer(
     # If enabled, log the interaction to Phospho
     if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
         phospho.log(
-            input=prompt,
+            input=query,
             output=llm_answer,
             session_id=session_id,
             metadata={
                 "sources": url_sources,
                 "url": url,
-                "system_prompt": "You are a helpful assistant replying to questions given a context.",
+                "system_prompt": "You are a helpful assistant replying to questions given a context.\n{prompt}",
                 "model": model_name,
+                "prompt": prompt,
             },
         )
     return llm_answer, url_sources
