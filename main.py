@@ -1,9 +1,9 @@
 import time
 from urllib.parse import urlparse
-
 import config
 import streamlit as st
-from agent import query2answer, phospho
+from agentnew import query2answer as query2answer_new, phospho
+from agent import query2answer
 from streamlit_feedback import streamlit_feedback
 
 
@@ -22,12 +22,12 @@ if "session_id" not in st.session_state:
     st.session_state.session_id = phospho.new_session()
 
 st.markdown(
-    "# 📖 url2chat - Chat with any website\n*Built by 🧪[phospho](https://phospho.ai), Open Source Text Analytics for LLM Apps*"
+    "# 📖 url2chat - Chat with any website\n*Built by [oggy](https://github.com/OggyFoxy/) @ 🧪[phospho](https://phospho.ai), Open Source Text Analytics for LLM Apps: version-trafilatura*"
 )
 
 ROLE_TO_AVATAR = {
     "user": "🦸‍♂️",
-    "assistant": "📖",
+    "assistant": "🤖",
 }
 
 if st.session_state.url is None:
@@ -38,7 +38,7 @@ if st.session_state.url is None:
         if button_wikipedia:
             url = "https://en.wikipedia.org/"
     with col2:
-        button_karpathy = st.button("A. Karpathy's blog")
+        button_karpathy = st.button("A.Karpathy's blog")
         if button_karpathy:
             url = "http://karpathy.github.io"
     with col3:
@@ -87,7 +87,7 @@ else:
             st.rerun()
 
     with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
-        st.markdown(f"You're chatting with {st.session_state.url}. Ask me anything! 📖")
+        st.markdown(f"You're chatting with {st.session_state.url}.")
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
@@ -103,12 +103,20 @@ else:
             st.markdown(query)
 
         # Display assistant response in chat message container
-        chat_answer, url_sources = query2answer(
-            query=query,
-            url=st.session_state.url,
-            session_messages=st.session_state.messages,
-            session_id=st.session_state.session_id,
-        )
+        if st.session_state.url == "https://phospho.ai":
+            chat_answer, url_sources = query2answer_new(
+                query=query,
+                url=st.session_state.url,
+                session_messages=st.session_state.messages,
+                session_id=st.session_state.session_id,
+            )
+        else:
+            chat_answer, url_sources = query2answer(
+                query=query,
+                url=st.session_state.url,
+                session_messages=st.session_state.messages,
+                session_id=st.session_state.session_id,
+            )
         with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
             st.markdown(chat_answer)
             # Display the sources in a hidden accordion container
@@ -128,9 +136,9 @@ def _submit_feedback(feedback: dict):
             raw_flag=feedback["score"],
             notes=feedback["text"],
         )
-        st.toast(f"Thank you for your feedback!")
+        st.toast("Thank you for your feedback!")
     else:
-        st.toast(f"phospho is not setup, feedback not sent.")
+        st.toast("phospho is not setup, feedback not sent.")
 
 
 if len(st.session_state.messages) > 1:
