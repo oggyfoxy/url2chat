@@ -1,15 +1,14 @@
 import os
-from typing import Dict, List, Tuple
-from dotenv import load_dotenv
-import openai
-from openai import OpenAI
-import trafilatura
-import phospho
-import config
 import time
+from typing import Dict, List, Tuple
 
+import config
+import openai
+import trafilatura
+from openai import OpenAI
 
-load_dotenv()
+import phospho
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI()
