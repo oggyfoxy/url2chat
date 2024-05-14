@@ -116,6 +116,7 @@ def query2answer(
     """
     Given a query and an URL, return the answer to the query.
     """
+
     logger.info(f"Query: {query}")
     url_sources = []
 
@@ -146,6 +147,7 @@ def query2answer(
                 "url": url,
                 "system_prompt": f"You are a helpful assistant replying to questions given a context.\n{prompt}",
                 "model": model_name,
+                "version_id": "exa_old",
             },
         )
     return llm_answer, url_sources
