@@ -3,3 +3,4 @@
 .venv
 tests.py
 __pycache__/
+subfinder.py

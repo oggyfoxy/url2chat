@@ -2,9 +2,16 @@ import time
 from urllib.parse import urlparse
 import config
 import streamlit as st
-from agentnew import query2answer as query2answer_new, phospho
+from advanced_agent import query2answer as query2answer_new, phospho
 from agent import query2answer
 from streamlit_feedback import streamlit_feedback
+import asyncio
+
+
+def run_async_function(async_func, *args, **kwargs):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    return loop.run_until_complete(async_func(*args, **kwargs))
 
 
 # Initialize URL
@@ -104,10 +111,10 @@ else:
 
         # Display assistant response in chat message container
         if st.session_state.url == "https://phospho.ai":
-            chat_answer, url_sources = query2answer_new(
+            chat_answer, url_sources = run_async_function(
+                query2answer_new,
                 query=query,
                 url=st.session_state.url,
-                session_messages=st.session_state.messages,
                 session_id=st.session_state.session_id,
             )
         else:
