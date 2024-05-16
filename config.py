@@ -21,3 +21,6 @@ except KeyError:
     logger.warning(
         "PHOSPHO_PROJECT_ID not set as a streamlit secret (.streamlit/secrets.toml). phospho is disabled."
     )
+
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+GOOGLE_CSE_ID = st.secrets["GOOGLE_CSE_ID"]

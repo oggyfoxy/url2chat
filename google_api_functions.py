@@ -1,9 +1,6 @@
 from typing import List
 from googleapiclient.discovery import build
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+import config
 
 
 def google_search(search_term, api_key, cse_id, **kwargs):
@@ -19,8 +16,8 @@ def get_relevant_urls_from_google(domain: str, query: str) -> List[str]:
     """
     results = google_search(
         f"site:{domain}",
-        os.getenv("GOOGLE_API_KEY"),
-        os.getenv("GOOGLE_CSE_ID"),
+        config.GOOGLE_API_KEY,
+        config.GOOGLE_CSE_ID,
         num=10,
     )
     relevant_urls = [
