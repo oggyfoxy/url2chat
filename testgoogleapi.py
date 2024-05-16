@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-
+# you can get the API's following this guide: https://github.com/googleapis/google-api-python-client/tree/main
 my_api_key = os.getenv("GOOGLE_API_KEY")
 my_cse_id = os.getenv("GOOGLE_CSE_ID")
 

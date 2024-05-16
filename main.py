@@ -2,7 +2,7 @@ import time
 from urllib.parse import urlparse
 import config
 import streamlit as st
-from asynctest import query2answer as query2answer_new, phospho
+from agentnew import query2answer as query2answer_new, phospho
 from agent import query2answer
 from streamlit_feedback import streamlit_feedback
 import asyncio
