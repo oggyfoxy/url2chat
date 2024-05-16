@@ -80,7 +80,7 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
 
 def invoke_llm(
     prompt: str,
-    model_name: str = "gpt-3.5-turbo",
+    model_name: str = "gpt-4o",
     previous_messages: Optional[List[Dict[str, str]]] = None,
 ) -> Optional[str]:
     """
@@ -111,7 +111,7 @@ def query2answer(
     url: str,
     session_messages: List[Dict[str, str]],
     session_id: str,
-    model_name: str = "gpt-3.5-turbo",
+    model_name: str = "gpt-4o",
 ) -> Tuple[str, List[str]]:
     """
     Given a query and an URL, return the answer to the query.
@@ -121,11 +121,11 @@ def query2answer(
     url_sources = []
 
     try:
-        chuncks, url_to_highlights = get_text_chunks(query, url)
+        chunks, url_to_highlights = get_text_chunks(query, url)
         url_sources = list(url_to_highlights.keys())
-        logger.info(f"Retrieved {len(chuncks)} chunks from {url}")
-        prompt = generate_prompt_from_chuncks(chuncks, query)
-        # TODO: add a check on token lenght to avoid exceeding the max token length of the model.
+        logger.info(f"Retrieved {len(chunks)} chunks from {url}")
+        prompt = generate_prompt_from_chuncks(chunks, query)
+        # TODO: add a check on token length to avoid exceeding the max token length of the model.
         llm_answer = invoke_llm(prompt, previous_messages=session_messages)
         if llm_answer is None:
             llm_answer = (

@@ -110,19 +110,21 @@ else:
             st.markdown(query)
 
         # Display assistant response in chat message container
-        if st.session_state.url == "https://phospho.ai":
-            chat_answer, url_sources = run_async_function(
-                query2answer_new,
-                query=query,
-                url=st.session_state.url,
-                session_id=st.session_state.session_id,
-            )
-        else:
+        chat_answer, url_sources = run_async_function(
+            query2answer_new,
+            query=query,
+            url=st.session_state.url,
+            session_id=st.session_state.session_id,
+        )
+
+        # Fallback to sync function if no URL sources are found
+        if not url_sources:
             chat_answer, url_sources = query2answer(
                 query=query,
                 url=st.session_state.url,
                 session_messages=st.session_state.messages,
                 session_id=st.session_state.session_id,
+                model_name="gpt-4o",
             )
         with st.chat_message("assistant", avatar=ROLE_TO_AVATAR["assistant"]):
             st.markdown(chat_answer)
