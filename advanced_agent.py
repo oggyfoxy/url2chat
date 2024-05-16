@@ -11,7 +11,7 @@ import trafilatura
 from openai import AsyncOpenAI
 
 import config
-from .google import get_relevant_urls_from_google
+from google_api_functions import get_relevant_urls_from_google
 
 # Initialize OpenAI client and other libraries
 openai.api_key = os.getenv("OPENAI_API_KEY")
