@@ -1,10 +1,6 @@
 from typing import List
 from googleapiclient.discovery import build
-from dotenv import load_dotenv
-import os
 import config
-
-load_dotenv()
 
 
 def google_search(search_term, api_key, cse_id, **kwargs):
