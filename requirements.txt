@@ -62,4 +62,4 @@ zipp==3.17.0
 sublist3r
 httpx
 trafilatura
-testgoogleapi
+google-api-python-client
