@@ -1,21 +1,15 @@
 import asyncio
-import os
 import time
 from typing import Dict, List, Tuple
 from urllib.parse import urlparse
-
 import httpx
-import openai
 import phospho
 import trafilatura
 from openai import AsyncOpenAI
-
 import config
 from google_api_functions import get_relevant_urls_from_google
 
 # Initialize OpenAI client and other libraries
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
 client = AsyncOpenAI()
 
 if config.PHOSPHO_API_KEY and config.PHOSPHO_PROJECT_ID:
