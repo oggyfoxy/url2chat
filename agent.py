@@ -119,6 +119,7 @@ def query2answer(
 
     logger.info(f"Query: {query}")
     url_sources = []
+    prompt = None
 
     try:
         chunks, url_to_highlights = get_text_chunks(query, url)
