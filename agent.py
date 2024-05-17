@@ -39,6 +39,7 @@ def get_text_chunks(
         use_autoprompt=True,
         include_domains=[url],
     )
+    logger.info(f"search_response value is: {search_response}")
 
     chunks = ["\n".join(sr.highlights) for sr in search_response.results]
     url_to_highlights = {sr.url: sr.highlights for sr in search_response.results}
@@ -119,6 +120,7 @@ def query2answer(
 
     logger.info(f"Query: {query}")
     url_sources = []
+    prompt = None
 
     try:
         chunks, url_to_highlights = get_text_chunks(query, url)
