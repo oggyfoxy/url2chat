@@ -65,3 +65,4 @@ trafilatura
 google-api-python-client
 pytest
 bs4
+pyppeteer
