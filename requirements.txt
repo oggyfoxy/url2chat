@@ -63,3 +63,5 @@ sublist3r
 httpx
 trafilatura
 google-api-python-client
+pytest
+bs4

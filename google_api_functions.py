@@ -15,7 +15,7 @@ def get_relevant_urls_from_google(domain: str, query: str) -> List[str]:
     This function uses the Google API. Instructions are in the README.md
     """
     results = google_search(
-        f"site:{domain}",
+        f"{query} site:{domain}",
         config.GOOGLE_API_KEY,
         config.GOOGLE_CSE_ID,
         num=10,
